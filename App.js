@@ -1,4 +1,4 @@
-import { StyleSheet, Button, Text, TextInput, View, FlatList, Pressable, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, Button, Text, TextInput, View, FlatList, Pressable, TouchableOpacity, Alert, CheckBox } from 'react-native';
 import { useState } from 'react';
 import Modal from './components/Modal';
 export default function App() {
@@ -6,8 +6,11 @@ export default function App() {
   const [list, setList] = useState([])
   const [modalVisible, setModalVisible] = useState(false)
   const [itemSelected, setitemSelected] = useState({})
+  const [confirmedList, setConfirmedList] = useState([])
+  const [confirmed, setConfirmed] = useState(false)
 
   const onHandleChange = (t) => setTextItem(t)
+
   const addItem = () => {
     setList(currenState => [
       ...currenState,
@@ -20,19 +23,30 @@ export default function App() {
     setitemSelected(list.filter((item) => item.id === id)[0])
     setModalVisible(true)
   }
+
   const deleteItem = () => {
     setList((currenState) => currenState.filter(item => item.id !== itemSelected.id))
     setitemSelected({})
     setModalVisible(false)
   }
+
+
+  const completeItem = () => {
+    setConfirmed(true)
+    setModalVisible(false)
+  }
+  const cancelar = () => {
+    setModalVisible(false)
+  }
+
   const renderItem = ({ item }) => (
     <TouchableOpacity onPress={() => selectedItem(item.id)}>
-      <Text>{item.value}</Text>
+      <Text style={styles.itemRender}>{item.value}</Text>
     </TouchableOpacity>
   )
   return (
     <View style={styles.container}>
-      <Text>Lista de shopping</Text>
+      <Text>Lista de shopping por hacer</Text>
       <View style={styles.addItem}>
         <TextInput
           value={textItem}
@@ -51,7 +65,7 @@ export default function App() {
           keyExtractor={(item) => item.id}
         />
       </View>
-      <Modal isVisible={modalVisible} actionDeleteItem={deleteItem} style={styles.deleteItem} />
+      <Modal isVisible={modalVisible} cancelar={cancelar} actionCompleteItem={completeItem} actionDeleteItem={deleteItem} style={styles.deleteItem} />
     </View >
   );
 }
@@ -83,8 +97,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center"
   },
-  deleteItem: {
-    marginTop: 30,
+  itemRender: {
+    margin: 15,
   },
   addButton: {
     backgroundColor: "#FAA618",

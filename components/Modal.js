@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, Modal as NewModal, Pressable, } from 'react-native';
 import React from 'react'
 
-const Modal = ({ isVisible, actionDeleteItem }) => {
+const Modal = ({ isVisible, actionDeleteItem, actionCompleteItem, cancelar }) => {
     return (
         <NewModal
             animationType='fade'
@@ -9,13 +9,25 @@ const Modal = ({ isVisible, actionDeleteItem }) => {
             visible={isVisible}
         >
             <View style={styles.centeredView}>
-                <View style={{ backgroundColor: "white" }}>
-                    <Text>¿Queres eliminar este elemento?</Text>
+                <View style={{ backgroundColor: "white", alignItems: "center" }}>
+                    <Text>¿Que acción quieres hacer con este elemento?</Text>
                     <Pressable
                         onPress={() => actionDeleteItem()}
-                        style={{ backgroundColor: "red" }}
+                        style={{ backgroundColor: "red", width: "100%", alignItems: "center" }}
                     >
-                        <Text>eliminar</Text>
+                        <Text>Eliminar</Text>
+                    </Pressable>
+                    <Pressable
+                        onPress={() => actionCompleteItem()}
+                        style={{ backgroundColor: "green", width: "100%", alignItems: "center" }}
+                    >
+                        <Text>Marcar item como completado</Text>
+                    </Pressable>
+                    <Pressable
+                        onPress={() => cancelar()}
+                        style={{ width: "100%", alignItems: "center" }}
+                    >
+                        <Text>Cancelar</Text>
                     </Pressable>
                 </View>
             </View>
@@ -25,9 +37,9 @@ const Modal = ({ isVisible, actionDeleteItem }) => {
 export default Modal
 const styles = StyleSheet.create({
     centeredView: {
-        flex: 0.5,
-        justifyContent: "center",
+        flex: 1,
+        justifyContent: "flex-end",
         alignItems: "center",
-        // margintTop: "100",
+        marginBottom: 50,
     }
 })
